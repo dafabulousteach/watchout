@@ -3,3 +3,14 @@
 /* Note: an asteroid image is included in this repo.
 Feel free to use it if you like. */
 
+.scoreboard{
+	text-align: right;
+	font-family: 'Helvetica';
+	border-style: solid;
+	border-color: red;
+	margin-left: 850px;
+}
+body{
+	background-color: #000000;
+}
+
