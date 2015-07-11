@@ -2,6 +2,8 @@ var body = d3.select('body');
 var score = 0;
 var highScore = 0;
 var collisions = 0;
+var width = 1850;
+var height = 900;
 
 
 setInterval(function() {
@@ -25,14 +27,15 @@ var svg = body.append("svg")
 	.attr('class', 'board');
 
 var g = svg.append('g');
-var width = d3.select('svg').style('width');
-var height = d3.select('svg').style('height')
 
 var catPosition = [];
-for(var i = 1; i < 52; i++){
-	catPosition.push(i);
-}
 
+var shuffleCats = function(){
+  for(var i = 0; i < 51; i++){
+	catPosition[i] = ([Math.floor(Math.random() * (width - 1) + 1), Math.floor(Math.random() * (height - 1) + 1)]);
+  }
+console.log(catPosition);
+};
 var setHighScore = function(val){
 	if(val > highScore){
 		highScore = score;
@@ -66,8 +69,10 @@ var moveCats = function(){
 	d3.selectAll('.cat')
 	.data(catPosition)
 	.transition()
-		.attr("y", function(d){return d * Math.random() * 100})
-		.attr("x", function(d){return d * Math.random() * 100})
+		.attr("y", function(d){
+			return d[1]})
+		.attr("x", function(d){
+			return d[0]})
 		.duration(1500)
 };
 
@@ -93,16 +98,22 @@ var player = function(){
 
 var money = function(){
 	g.append('svg:image')
-	.attr("xlink:href", ".gif")
+	.attr("xlink:href", "money.gif")
     .attr("class", "player")
     .attr("width", 50)
     .attr("height", 50)
     .attr("x", 50)
     .attr("y", 50)
+
 }
 
 for(var i=0;i<=50;i++){
 	makeCats();	
 }
+shuffleCats();
 player();
-setInterval(moveCats, 2000);
+money();
+setInterval(function(){
+	shuffleCats();
+	moveCats();
+}, 2000);
