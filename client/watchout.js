@@ -1,4 +1,13 @@
 var body = d3.select('body');
+var score = 0;
+
+setInterval(function() {
+	score++;
+	body.select('.current')
+	.select('span')
+	.text(score)
+}, 1000);
+
 
 body.selectAll('.scoreboard')
 	.data(['grey'])
@@ -6,7 +15,6 @@ body.selectAll('.scoreboard')
 		function(d){
 			return d;
 		})
-
 
 var svg = body.append("svg")
 	.attr('width', 800)
@@ -29,53 +37,33 @@ var makeCats = function(){
     .attr("width", 100)
     .attr("height", 100)
     .attr("x", Math.random() * 1000)
-    .attr("y", Math.random() * 1000);	
+    .attr("y", Math.random() * 1000)
+    .on('mouseover', function(){
+  		collisionDetect(function(){
+  			score = 0;
+
+  		});
+    });	
 }
 
-for(var i=0;i<=50;i++){
-	makeCats();	
-}
 
 var moveCats = function(){
 	d3.selectAll('.cat')
 	.data(catPosition)
 	.transition()
-	.attr("y", function(d){return d * Math.random() * 100})
-	.attr("x", function(d){return d * Math.random()  * 100})
-	.duration(1500)
+		.attr("y", function(d){return d * Math.random() * 100})
+		.attr("x", function(d){return d * Math.random() * 100})
+		.duration(1500)
 };
 
-var collision = function(){
-	// select a cat
-	// if the position of one cat is within range
-		// increase the collision count
+var drag = d3.behavior.drag()  
+    .on('drag', function() { d3.select('.player')
+    	.attr('x', d3.event.x)
+    	.attr('y', d3.event.y); })
+
+var collisionDetect = function(callback){
+	callback();
 };
-
-// var movePlayer = function(){
-//   window.addEventListener("keydown", function (event) {
-//      if (event.defaultPrevented) {
-//     return; // Should do nothing if the key event was already consumed.
-//   }
-//   if(event.key === "ArrowUp"){
-// 		console.log('Up');
-// 	}
-  
-//   	if(event.key === "ArrowDown"){
-//   		console.log('Down');
-//   	}
-   
-//     if(event.key === "ArrowLeft"){
-//     	console.log('Left');
-//     }
-    
-//     if(event.key === "ArrowRight"){
-//     	console.log('Right');
-//     }
-//     event.preventDefault();
-// 	}, true);
-// // };
-
-console.log(height, width);
 
 var player = function(){
 	g.append('svg:image')
@@ -85,6 +73,21 @@ var player = function(){
     .attr("height", 50)
     .attr("x", 50)
     .attr("y", 50)
+    .call(drag);
+}
+
+var money = function(){
+	g.append('svg:image')
+	.attr("xlink:href", ".gif")
+    .attr("class", "player")
+    .attr("width", 50)
+    .attr("height", 50)
+    .attr("x", 50)
+    .attr("y", 50)
+}
+
+for(var i=0;i<=50;i++){
+	makeCats();	
 }
 player();
 setInterval(moveCats, 2000);
