@@ -2,6 +2,8 @@ var body = d3.select('body');
 var score = 0;
 var highScore = 0;
 var collisions = 0;
+
+
 setInterval(function() {
 	score++;
 	body.select('.current')
