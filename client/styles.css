@@ -8,7 +8,8 @@ Feel free to use it if you like. */
 	font-family: 'Helvetica';
 	border-style: solid;
 	border-color: red;
-	margin-left: 850px;
+	max-width: 150px;
+	float: right;
 }
 body{
 	background-image: url("http://media.giphy.com/media/9YNAim10KNUeA/giphy.gif");
@@ -19,6 +20,6 @@ body{
 	height: 100%;
 }
 
-.rock{
-	background-image: 'asteroid.png'
+.cat{
+	
 }
