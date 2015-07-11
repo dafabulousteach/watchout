@@ -1,6 +1,7 @@
 var body = d3.select('body');
 var score = 0;
-
+var highScore = 0;
+var collisions = 0;
 setInterval(function() {
 	score++;
 	body.select('.current')
@@ -30,6 +31,15 @@ for(var i = 1; i < 52; i++){
 	catPosition.push(i);
 }
 
+var setHighScore = function(val){
+	if(val > highScore){
+		highScore = score;
+		body.select('.high')
+		.select('span')
+		.text(highScore);
+	}
+}
+
 var makeCats = function(){
 	g.append("svg:image")
     .attr("xlink:href", "cat.gif")
@@ -40,12 +50,15 @@ var makeCats = function(){
     .attr("y", Math.random() * 1000)
     .on('mouseover', function(){
   		collisionDetect(function(){
-  			score = 0;
-
+  			setHighScore(score);
+  			score = 0
+  			collisions++;
+  			body.select('.collisions')
+  			.select('span')
+  			.text(collisions);
   		});
     });	
 }
-
 
 var moveCats = function(){
 	d3.selectAll('.cat')
