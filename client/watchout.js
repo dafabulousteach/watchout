@@ -34,7 +34,6 @@ var shuffleCats = function(){
   for(var i = 0; i < 51; i++){
 	catPosition[i] = ([Math.floor(Math.random() * (width - 1) + 1), Math.floor(Math.random() * (height - 1) + 1)]);
   }
-console.log(catPosition);
 };
 var setHighScore = function(val){
 	if(val > highScore){
@@ -73,7 +72,15 @@ var moveCats = function(){
 			return d[1]})
 		.attr("x", function(d){
 			return d[0]})
-		.duration(1500)
+		.duration(2500)
+};
+
+var moveMoney = function(){
+	d3.selectAll('.money')
+	.transition()
+		.attr("y", Math.floor(Math.random() * (height - 1) + 1))
+		.attr("x", Math.floor(Math.random() * (width - 1) + 1))
+		.duration(4000)
 };
 
 var drag = d3.behavior.drag()  
@@ -99,21 +106,39 @@ var player = function(){
 var money = function(){
 	g.append('svg:image')
 	.attr("xlink:href", "money.gif")
-    .attr("class", "player")
+    .attr("class", "money")
     .attr("width", 50)
     .attr("height", 50)
-    .attr("x", 50)
-    .attr("y", 50)
+    .attr("x", Math.floor(Math.random() * (width - 1) + 1))
+    .attr("y", Math.floor(Math.random() * (height - 1) + 1))
+    .on('mouseover', function(){
+  		collisionDetect(function(){
+  			score += 10;
+  			body.select('.money').remove()
+  		});
+    });
 
 }
 
 for(var i=0;i<=50;i++){
 	makeCats();	
 }
+
 shuffleCats();
 player();
-money();
+setInterval(function(){
+	if(d3.select('.money')[0][0] === null){
+		money();
+	}
+}, 3000);
+
+setInterval(function() {
+	moveMoney();
+}, 4000);
+
 setInterval(function(){
 	shuffleCats();
 	moveCats();
-}, 2000);
+}, 3500);
+
+
